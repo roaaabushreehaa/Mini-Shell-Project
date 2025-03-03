@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:59:17 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/02/28 14:32:36 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:49:11 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,64 +30,86 @@ t_cmd	*init_cmd(void)
 	cmd->next = NULL;
 	return (cmd);
 }
-
 t_cmd	*command(t_token **token, int cmd_num)
 {
-	t_cmd	*new_cmd;
-	int		count_cmd;
+    t_cmd	*new_cmd;
+    int		count_cmd;
+    char	*processed_value;
 
-	count_cmd = 0;
-	new_cmd = init_cmd();
-	if (!new_cmd)
-		return (NULL);
-	while (*token && ft_strcmp((*token)->value, "|") != 0)
-	{
-		if (ft_strcmp((*token)->value, "echo") == 0)
-		{
-			expander_main((*token)->next);
-		}
-		new_cmd->args[count_cmd++] = ft_strdup((*token)->value);
-		*token = (*token)->next;
-	}
-	new_cmd->args[count_cmd] = NULL;
-	new_cmd->command_num = cmd_num;
-	if (*token && ft_strcmp((*token)->value, "|") == 0)
-		*token = (*token)->next;
-	return (new_cmd);
+    count_cmd = 0;
+    new_cmd = init_cmd();
+    if (!new_cmd)
+        return (NULL);
+    
+    while (*token && ft_strcmp((*token)->value, "|") != 0)
+    {
+        processed_value = NULL;
+        if ((*token)->value)
+        {
+            if (count_cmd == 0)
+            {
+                expander_main(*token);
+                processed_value = ft_strdup((*token)->value);
+            }
+            else
+            {
+                if (ft_strchr((*token)->value, '\'') && ft_strchr((*token)->value, '"'))
+                    processed_value = handle_mixed_quotes(*token);
+                else if (ft_strchr((*token)->value, '\'') || ft_strchr((*token)->value, '"'))
+                    processed_value = (*token)->value;
+                else
+                    processed_value = ft_strdup((*token)->value);
+            }
+            new_cmd->args[count_cmd++] = processed_value;
+        }
+        *token = (*token)->next;
+    }
+    
+    new_cmd->args[count_cmd] = NULL;
+    new_cmd->command_num = cmd_num;
+    if (*token && ft_strcmp((*token)->value, "|") == 0)
+        *token = (*token)->next;
+    return (new_cmd);
 }
 
 t_cmd	*separator(t_token *token)
 {
-	t_cmd	*cmd_list;
-	t_cmd	*cmd_node;
-	t_cmd	*new_cmd;
-	int		cmd_num;
+    t_cmd	*cmd_list;
+    t_cmd	*cmd_node;
+    t_cmd	*new_cmd;
+    int		cmd_num;
 
-	cmd_node = NULL;
-	cmd_list = NULL;
-	cmd_num = 1;
-	while (token)
-	{
-		new_cmd = command(&token, cmd_num++);
-		if (!new_cmd)
-			return (NULL);
-		if (!cmd_list)
-			cmd_list = new_cmd;
-		else
-			cmd_node->next = new_cmd;
-		cmd_node = new_cmd;
-	}
-	return (cmd_list);
+	if (check_quotes_num(token))
+    {
+        ft_printf("Error: Unmatched quotes\n");
+        return (NULL);
+    }
+    cmd_node = NULL;
+    cmd_list = NULL;
+    cmd_num = 1;
+    while (token)
+    {
+        new_cmd = command(&token, cmd_num++);
+        if (!new_cmd)
+            return (NULL);
+        if (!cmd_list)
+            cmd_list = new_cmd;
+        else
+            cmd_node->next = new_cmd;
+        cmd_node = new_cmd;
+    }
+    return (cmd_list);
 }
 
 void	print_commands(t_cmd *cmd)
 {
 	while (cmd)
 	{
-		printf("Command %d: ", cmd->command_num);
+		printf("Command %d:\n", cmd->command_num);
 		for (int i = 0; cmd->args[i]; i++)
-			printf("%s ", cmd->args[i]);
+			printf("arg[%d]:%s\n", i, cmd->args[i]);
 		printf("\n");
 		cmd = cmd->next;
 	}
 }
+

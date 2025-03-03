@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/02/28 18:42:53 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:07:13 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ void define_word (t_token *token);
 int expander_main(t_token *token);
 char  *handle_onequote_expander(t_token *t);
 char *handel_twoquotes(t_token *token);
+int check_quotes_num(t_token *token);
 char *handle_mixed_quotes(t_token *token);
 #endif

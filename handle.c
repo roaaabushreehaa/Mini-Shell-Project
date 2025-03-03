@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hh.c                                               :+:      :+:    :+:   */
+/*   handle.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:00:20 by jalqam            #+#    #+#             */
-/*   Updated: 2025/02/24 14:53:47 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:31:43 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,29 @@ void	text_error(int which)
 		ft_printf("command not found\n");
 		return ;
 	}
+}
+
+int check_quotes_num(t_token *token)
+{
+	t_token *temp = token; 
+	int count_single = 0;
+	int count_double = 0;
+	int right =0;
+	while (temp)
+	{
+		int i = 0; 
+		while (temp->value[i])
+		{
+			if (temp->value[i] == '"')
+				count_double++;
+			if (temp->value[i] == '\'')
+				count_single++;
+			i++;
+		}
+		temp = temp->next;
+	}
+
+	if(count_single % 2 != 0 || count_double % 2 != 0)
+		right=1;
+	return (right);
 }

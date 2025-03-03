@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/02/27 18:55:47 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:12:15 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	main(int argc, char *argv[])
 		tokens = tokenize(readline_shell);
 		define_word(tokens);
 		cmd = separator(tokens);
+		if(!cmd)
+			return 1;
 		print_tokens(tokens);
 		print_commands(cmd);
 		free_tokens(tokens);
