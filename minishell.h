@@ -6,7 +6,7 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 17:00:49 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/05 18:18:14 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,10 @@ void free_commands(t_cmd *cmd);
 int export_command(t_cmd *cmd, t_env **env);
 int	print_export_command(t_env *env);
 int is_valid_export(char *arg);
-#endif
+int expander_main(t_token *token);
+char *handle_mixed_quotes(t_token *token);
+void	free_cmd(t_cmd *cmd);
+int check_quotes_num(t_token *token);
+char *handle_onequote_expander(t_token *token);
+char *handle_twoquotes(t_token *token);
+#endif	
