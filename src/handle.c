@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:00:20 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/03 16:31:43 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:59:57 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,31 @@ void	text_error(int which)
 
 int check_quotes_num(t_token *token)
 {
-	t_token *temp = token; 
-	int count_single = 0;
-	int count_double = 0;
-	int right =0;
-	while (temp)
-	{
-		int i = 0; 
-		while (temp->value[i])
-		{
-			if (temp->value[i] == '"')
-				count_double++;
-			if (temp->value[i] == '\'')
-				count_single++;
-			i++;
-		}
-		temp = temp->next;
-	}
-
-	if(count_single % 2 != 0 || count_double % 2 != 0)
-		right=1;
-	return (right);
+    t_token *temp = token;
+    while (temp)
+    {
+        int i = 0;
+        int in_double = 0;
+        int in_single = 0;
+        
+        while (temp->value && temp->value[i])
+        {
+            if (temp->value[i] == '"')
+            {
+                if (!in_single)
+                    in_double = !in_double;
+            }
+            else if (temp->value[i] == '\'')
+            {
+                if (!in_double)
+                    in_single = !in_single;
+            }
+            i++;
+        }
+        
+        if ((in_single && !in_double) || (!in_single && in_double))
+            return (1);
+        temp = temp->next;
+    }
+    return (0);
 }

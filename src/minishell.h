@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/03 16:07:13 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:02:23 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include"libft/libft.h"
+#include"../libft/libft.h"
 
 typedef enum s_enum
 {
@@ -95,7 +95,9 @@ void define_word (t_token *token);
 void define_word (t_token *token);
 int expander_main(t_token *token);
 char  *handle_onequote_expander(t_token *t);
-char *handel_twoquotes(t_token *token);
+char *handle_twoquotes(t_token *token);
 int check_quotes_num(t_token *token);
 char *handle_mixed_quotes(t_token *token);
+void	free_cmd(t_cmd *cmd);
+void	free_cmd_list(t_cmd *cmd_list);
 #endif
