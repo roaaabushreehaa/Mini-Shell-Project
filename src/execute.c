@@ -6,11 +6,11 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:18:13 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/05 14:13:43 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/05 18:14:46 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int execute_commands(t_cmd *cmd, t_env *env)
 {

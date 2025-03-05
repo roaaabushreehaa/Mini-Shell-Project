@@ -3,24 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/03 16:12:15 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:27:34 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp[])
 {
 	char	*readline_shell;
 	t_token	*tokens;
 	t_cmd	*cmd;
+	t_env   *env;
 
-	cmd = NULL;
+	//cmd = NULL;
 	(void)argv;
 	(void)argc;
+	env = init_envp(envp);
+    	if (!env)
+        	return (1); 
 	while (1)
 	{
 		readline_shell = readline("🎀 minishell> ");
@@ -38,9 +42,11 @@ int	main(int argc, char *argv[])
 		cmd = separator(tokens);
 		if(!cmd)
 			return 1;
-		print_tokens(tokens);
-		print_commands(cmd);
+		// print_tokens(tokens);
+		// print_commands(cmd);
+		execute_commands(cmd, env);
 		free_tokens(tokens);
+		free_commands(cmd);
 		free(readline_shell);
 	}
 	return (0);

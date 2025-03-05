@@ -6,11 +6,11 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:27:24 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 17:06:19 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/05 18:14:25 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void free_env_node(t_env *node)
 {

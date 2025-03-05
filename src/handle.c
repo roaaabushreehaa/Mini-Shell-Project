@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:00:20 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 13:59:57 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:14:56 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	right_command_check(char *command)
 {

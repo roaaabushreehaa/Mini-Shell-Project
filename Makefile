@@ -5,7 +5,7 @@ FLAGS = -Wall -Wextra -Werror
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRC = read.c token.c handle.c split_handle.c utils.c split_quotes.c cmd.c define_word.c excutable.c expander.c
+SRC = read.c token.c handle.c split_handle.c utils.c split_quotes.c cmd.c define_word.c excutable.c expander.c env.c execute.c free.c parsing.c
 OBSRC = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 LIBFT_DIR = libft
