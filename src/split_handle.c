@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_handle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:13 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/03 15:42:56 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:15:07 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	split_quotes(char c, int *in_quotes, char *quote_char)
 {
@@ -65,52 +65,52 @@ char	**our_split(char *word)
 	free(s.new_word);
 	return (s.word_splitted);
 }
-char *extract_word(char *str, size_t *i) {
-    size_t start;
-    int in_quotes;
-    char quote_char;
-    
-    start = *i;
-    in_quotes = 0;
-    quote_char = 0;
-    
-    while (str[*i]) {
-        if ((str[*i] == '"' || str[*i] == '\'') && !in_quotes) {
-            in_quotes = 1;
-            quote_char = str[*i];
-        } else if (in_quotes && str[*i] == quote_char) {
-            in_quotes = 0;
-        }
-        (*i)++;
-        if (!in_quotes && str[*i] == ' ')
-            break;
-    }
-    
-    return (ft_substr(str, start, *i - start));
+
+char	*extract_word(char *str, size_t *i)
+{
+	size_t	start;
+	int		in_quotes;
+	char	quote_char;
+
+	start = *i;
+	in_quotes = 0;
+	quote_char = 0;
+	if (str[*i] == '"' || str[*i] == '\'')
+		handle_quotes(str, i, &in_quotes, &quote_char);
+	while (str[*i] && (in_quotes || str[*i] != ' '))
+	{
+		if (in_quotes && str[*i] == quote_char)
+		{
+			in_quotes = 0;
+			(*i)++;
+			break ;
+		}
+		(*i)++;
+	}
+	return (ft_substr(str, start, *i - start));
 }
 
-char **split_with_quotes(char *str) {
-    char **result;
-    size_t i;
-    size_t j;
-    
-    i = 0;
-    j = 0;
-    if (!str || !(result = malloc(sizeof(char *) * (ft_strlen(str) + 1))))
-        return (NULL);
-    
-    while (str[i]) {
-        skip_spaces(str, &i);
-        if (!str[i])
-            break;
-        result[j] = extract_word(str, &i);
-        if (!result[j]) {
-            free_result(result, j);
-            return (NULL);
-        }
-        j++;
-    }
-    
-    result[j] = NULL;
-    return (result);
+char	**split_with_quotes(char *str)
+{
+	char	**result;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (!str || !(result = malloc(sizeof(char *) * (ft_strlen(str) + 1))))
+		return (NULL);
+	while (str[i])
+	{
+		skip_spaces(str, &i);
+		if (!str[i])
+			break ;
+		if (!(result[j++] = extract_word(str, &i)))
+		{
+			free_result(result, j);
+			return (NULL);
+		}
+	}
+	result[j] = NULL;
+	return (result);
 }

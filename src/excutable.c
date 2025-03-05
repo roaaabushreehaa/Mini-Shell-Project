@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   excutable.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:18:13 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/02/26 13:39:06 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:14:42 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // int itrate(t_token * tokens)
 // {

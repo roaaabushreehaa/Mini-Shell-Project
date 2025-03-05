@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:01:41 by jalqam            #+#    #+#             */
-/*   Updated: 2025/02/27 18:56:50 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:14:10 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_token	*new_token(char *value)
 {
@@ -46,9 +46,9 @@ void	add_token(t_token **head, char *value)
 t_token	*tokenize(char *input)
 {
 	t_token	*tokens;
-	char	**token_split;
-	char	*joined;
-	char	*final;
+	 char	**token_split;
+	// char	*joined;
+	//char	*final;
 	int		i;
 
 	tokens = NULL;
@@ -56,16 +56,16 @@ t_token	*tokenize(char *input)
 	token_split = our_split(input);
 	while (token_split[++i])
 	{
-		if (token_split[i + 1] && token_split[i + 1][0] == '-')
-		{
-			joined = ft_strjoin(token_split[i], " ");
-			final = ft_strjoin(joined, token_split[i + 1]);
-			free(joined);
-			add_token(&tokens, final);
-			free(final);
-			i++;
-		}
-		else
+		// if (token_split[i + 1] && token_split[i + 1][0] == '-')
+		// {
+		// 	joined = ft_strjoin(token_split[i], " ");
+		// 	final = ft_strjoin(joined, token_split[i + 1]);
+		// 	free(joined);
+		// 	add_token(&tokens, final);
+		// 	free(final);
+		// 	i++;
+		// }
+		// else
 			add_token(&tokens, token_split[i]);
 	}
 	free_tokens_split(token_split);
@@ -81,7 +81,7 @@ void	print_tokens(t_token *head)
 	while (temp)
 	{
 		printf("[%s] ", temp->value);
-		printf("type %u \n", temp->type);
+		printf("type %u \n",temp->type);
 		temp = temp->next;
 	}
 	printf("\n");
