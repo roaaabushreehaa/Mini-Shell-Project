@@ -78,4 +78,5 @@ int		ft_pointer(unsigned long n, char *h);
 int		ft_hex_pointer(size_t n);
 int ft_isnumeric(char *str);
 char *ft_strndup(const char *s, size_t n);
+
 #endif
