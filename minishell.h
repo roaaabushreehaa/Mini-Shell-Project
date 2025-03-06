@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
 /*   Updated: 2025/03/06 15:04:04 by jalqam           ###   ########.fr       */
@@ -21,6 +21,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include"libft/libft.h"
+
+extern int g_exit_status;  // Add this line to track exit status globally
 
 typedef enum s_enum
 {
@@ -72,6 +74,14 @@ typedef struct s_env
     struct s_env    *next;
 } t_env;
 
+typedef struct s_quote_state {
+    char *result;
+    char *value;
+    int i;
+    int inside_double;
+    int inside_single;
+} t_quote_state;
+
 t_token *new_token(char *value) ;
 void add_token(t_token **head,char *value);
 t_token *tokenize(char *input);
@@ -120,4 +130,4 @@ void	append_node(t_env **env, t_env **last, t_env *new_node);
 void free_env_node(t_env *node);
 int unset_command(t_cmd *cmd, t_env **env);
 int cd_command(t_cmd *cmds, t_env *env);
-#endif	
+#endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 17:27:37 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/03 13:31:40 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/06 12:09:52 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int		ft_puthexx(unsigned int n);
 int		ft_puthex(unsigned int n);
 int		ft_pointer(unsigned long n, char *h);
 int		ft_hex_pointer(size_t n);
-int ft_isnumeric(char *str);
 char *ft_strndup(const char *s, size_t n);
 
 #endif
