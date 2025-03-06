@@ -1,5 +1,10 @@
 {
 	"files.associations": {
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"libft.h": "c",
+		"limits.h": "c",
+		"format": "c",
+		"chrono": "c",
+		"functional": "c"
 	}
 }

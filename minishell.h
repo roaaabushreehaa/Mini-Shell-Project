@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 18:18:14 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:40:46 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include"libft/libft.h"
+
+extern int g_exit_status;  // Add this line to track exit status globally
 
 typedef enum s_enum
 {
@@ -72,6 +74,14 @@ typedef struct s_env
     struct s_env    *next;
 } t_env;
 
+typedef struct s_quote_state {
+    char *result;
+    char *value;
+    int i;
+    int inside_double;
+    int inside_single;
+} t_quote_state;
+
 t_token *new_token(char *value) ;
 void add_token(t_token **head,char *value);
 t_token *tokenize(char *input);
@@ -116,4 +126,5 @@ void	free_cmd(t_cmd *cmd);
 int check_quotes_num(t_token *token);
 char *handle_onequote_expander(t_token *token);
 char *handle_twoquotes(t_token *token);
-#endif	
+int ft_isnumeric(char *str);
+#endif
