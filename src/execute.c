@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:18:13 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/05 18:14:46 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/06 12:47:06 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void echo_command(t_cmd *cmds)
     while (cmds->args[i])
     {
         printf("%s", cmds->args[i]);
-        if (cmds->args[i + 1])
+        if (cmds->args[i + 1] && !(cmds->args[i][0] == '\0'))
             printf(" ");
         i++;
     }
