@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:43:00 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/06 15:17:20 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:21:22 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,86 +48,99 @@ int expander_main(t_token *token)
     }
     return (0);
 }
-void init_quote_state(t_quote_state *state, char *token_value)
-{
-    state->result = ft_strdup("");
-    state->value = token_value;
-    state->i = 0;
-    state->inside_double = 0;
-    state->inside_single = 0;
-}
 
-void process_quote_char(t_quote_state *state, char quote_char)
-{
-    char *old_result = state->result;
+// char *handle_mixed_quotes(t_token *token)
+// {
+//     if (!token || !token->value)
+//         return (NULL);
+        
+//     char *result;
+//     char *value;
+//     int i;
+//     int inside_double;
+//     int inside_single;
+//     char *old_result;
+//     char new_char[2];
+//     i = 0;
+//     inside_double = 0;
+//     result = ft_strdup("");
+//     value = token->value;
+//     inside_single = 0;
+//     while (value[i])
+//     {
+//         if (value[i] == '"' && !inside_single)
+//         {
+//             inside_double = !inside_double;
+//             if (inside_single)
+//             {
+//                 old_result = result;
+//                 result = ft_strjoin(result, "\"");
+//                 free(old_result);
+//             }
+//         }
+//         else if (value[i] == '\'' && !inside_double)
+//         {
+//             inside_single = !inside_single;
+//             if (inside_double)
+//             {
+//                 char *old_result = result;
+//                 result = ft_strjoin(result, "'");
+//                 free(old_result);
+//             }
+//         }
+//         else
+//         {
+//             old_result = result;
+//             new_char[0] = value[i];
+//             new_char[1] = '\0';
+//             result = ft_strjoin(result, new_char);
+//             free(old_result);
+//         }
+//         i++;
+//     }
     
-    if (quote_char == '"' && !(state->inside_single))
-    {
-        state->inside_double = !(state->inside_double);
-        if (state->inside_single)
-        {
-            state->result = ft_strjoin(state->result, "\"");
-            free(old_result);
-        }
-    }
-    else if (quote_char == '\'' && !(state->inside_double))
-    {
-        state->inside_single = !(state->inside_single);
-        if (state->inside_double)
-        {
-            state->result = ft_strjoin(state->result, "'");
-            free(old_result);
-        }
-    }
-}
-
-static void add_char_to_result(t_quote_state *state)
-{
-    char *temp = state->result;
-    char curr[2] = {state->value[state->i], '\0'};
-    state->result = ft_strjoin(state->result, curr);
-    free(temp);
-}
+//     return (result);
+// }
 
 char *handle_mixed_quotes(t_token *token)
 {
     if (!token || !token->value)
         return (NULL);
-    t_quote_state state;
-    init_quote_state(&state, token->value);
-    int is_first_quote = 1;
+        
+    char *result;
+    char *value;
+    int i;
+    int inside_double;
+    int inside_single;
     
-    while (state.value[state.i])
+    i = 0;
+    inside_double = 0;
+    inside_single = 0;
+    result = ft_strdup("");
+    value = token->value;
+    
+    while (value[i])
     {
-        if (state.value[state.i] == '"')
+        if (value[i] == '"' && !inside_single)
         {
-            if (!state.inside_single)
-            {
-                state.inside_double = !state.inside_double;
-                if (is_first_quote || (state.value[state.i + 1] == 'c' && !state.inside_double))
-                {
-                    is_first_quote = 0;
-                    state.i++;
-                    continue;
-                }
-            }
-            add_char_to_result(&state);
+            inside_double = !inside_double;
+            i++;
+            continue;
         }
-        else if (state.value[state.i] == '\'')
+        else if (value[i] == '\'' && !inside_double)
         {
-            if (!state.inside_double)
-            {
-                state.inside_single = !state.inside_single;
-                add_char_to_result(&state);
-            }
-            else
-                add_char_to_result(&state);
+            inside_single = !inside_single;
+            i++;
+            continue;
         }
-        else
-            add_char_to_result(&state);
-        state.i++;
+        
+        char *old_result = result;
+        char new_char[2] = {value[i], '\0'};
+        result = ft_strjoin(result, new_char);
+        free(old_result);
+        i++;
     }
-    return state.result;
+    return result;
 }
 
 char *handle_twoquotes(t_token *token)
@@ -200,19 +213,6 @@ char *handle_onequote_expander(t_token *token)
 //     char *str = token->value;
 //     int i = 0;
 //     int len;
-//     int start;
-//     char *env_value;
-        
-//     while (str[i])
-//     {
-//         if (str[i] == '$' && str[i + 1])
-//         {
-//             i++;
-//             start = i;
-//             while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-//                         i++;
-//             len = i - start;
-//             env_value=malloc(len + 1);
 //             ft_strlcpy(env_value, str + start, len + 1);
 //             result = ft_strjoin(result,);
 //         }
