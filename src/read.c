@@ -6,11 +6,27 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 18:27:34 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/08 16:04:45 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char *getpwd(char *prompt)
+{
+	char *pwd;
+	
+	pwd = getcwd(NULL, 0);
+	if(!pwd)
+	{
+		ft_printf("Error: getcwd\n");
+		return (NULL);
+	}
+	prompt = ft_strjoin("🎀minishell:",pwd);
+	prompt = ft_strjoin(prompt, "$ ");
+	free(pwd);
+	return (prompt);
+}
 
 int main(int argc, char *argv[], char *envp[])
 {
@@ -18,8 +34,10 @@ int main(int argc, char *argv[], char *envp[])
 	t_token	*tokens;
 	t_cmd	*cmd;
 	t_env   *env;
+	char *prompt;
 
 	//cmd = NULL;
+	prompt = NULL;
 	(void)argv;
 	(void)argc;
 	env = init_envp(envp);
@@ -27,7 +45,8 @@ int main(int argc, char *argv[], char *envp[])
         	return (1); 
 	while (1)
 	{
-		readline_shell = readline("🎀 minishell> ");
+		prompt = getpwd(prompt);
+		readline_shell = readline(prompt);
 		if (!readline_shell)
 		{
 			ft_printf("exit\n");
@@ -41,7 +60,7 @@ int main(int argc, char *argv[], char *envp[])
 		define_word(tokens);
 		cmd = separator(tokens);
 		if(!cmd)
-			return 1;
+			return (1);
 		// print_tokens(tokens);
 		// print_commands(cmd);
 		execute_commands(cmd, env);

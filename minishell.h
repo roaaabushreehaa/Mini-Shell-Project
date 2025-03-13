@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/06 15:04:04 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/13 14:04:35 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	free_env_list(t_env *env);
 t_env	*init_envp(char **env_list);
 void free_commands(t_cmd *cmd);
 int export_command(t_cmd *cmd, t_env **env);
-int	print_export_command(t_env *env);
+int print_export_command(t_env *env);
 int expander_main(t_token *token);
 char *handle_mixed_quotes(t_token *token);
 void	free_cmd(t_cmd *cmd);
@@ -130,4 +130,7 @@ void	append_node(t_env **env, t_env **last, t_env *new_node);
 void free_env_node(t_env *node);
 int unset_command(t_cmd *cmd, t_env **env);
 int cd_command(t_cmd *cmds, t_env *env);
+int ft_isnumeric(char *str);
+char    *handle_dollar_expander(t_token *token, t_env *env);
+
 #endif

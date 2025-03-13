@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:43:00 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/06 15:17:20 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:59:31 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,28 +194,72 @@ char *handle_onequote_expander(t_token *token)
     return (result);
 }
 
-// char *handle_dollar_expander(t_token *token, t_env *env)
-// {
-//     char *result = ft_strdup("");
-//     char *str = token->value;
-//     int i = 0;
-//     int len;
-//     int start;
-//     char *env_value;
-        
-//     while (str[i])
-//     {
-//         if (str[i] == '$' && str[i + 1])
-//         {
-//             i++;
-//             start = i;
-//             while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-//                         i++;
-//             len = i - start;
-//             env_value=malloc(len + 1);
-//             ft_strlcpy(env_value, str + start, len + 1);
-//             result = ft_strjoin(result,);
-//         }
-//     }
-//     return result;
-// }
+static char *get_env_value(t_env *env, char *key)
+{
+    t_env *current;
+
+    current = env;
+    while (current)
+    {
+        if (!ft_strcmp(current->key, key))
+            return (current->value);
+        current = current->next;
+    }
+    return (NULL);
+}
+
+static char *ft_strjoin_char(char *str, char c)
+{
+    char *result;
+    int i;
+
+    i = 0;
+    result = malloc(ft_strlen(str) + 2);
+    if (!result)
+        return (NULL);
+    while (str[i])
+    {
+        result[i] = str[i];
+        i++;
+    }
+    result[i] = c;
+    result[i + 1] = '\0';
+    return (result);
+}
+
+char *handle_dollar_expander(t_token *token, t_env *env)
+{
+    char *result;
+    char *str;
+    int i;
+    int start;
+    char *var_name;
+    char *var_value;
+
+    result = ft_strdup("");
+    str = token->value;
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
+        {
+            i++;
+            start = i;
+            while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+                i++;
+            var_name = ft_substr(str, start, i - start);
+            var_value = get_env_value(env, var_name);
+            char *temp = result;
+            result = ft_strjoin(result, var_value ? var_value : "");
+            free(temp);
+            free(var_name);
+        }
+        else
+        {
+            char *temp = result;
+            result = ft_strjoin_char(result, str[i++]);
+            free(temp);
+        }
+    }
+    return (result);
+}
