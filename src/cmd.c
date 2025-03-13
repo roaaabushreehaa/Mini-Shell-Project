@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:59:17 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/05 18:14:18 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/12 16:37:29 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_cmd	*command(t_token **token, int cmd_num)
             {
                 expander_main(*token);
                 processed_value = ft_strdup((*token)->value);
+                
             }
             else
             {

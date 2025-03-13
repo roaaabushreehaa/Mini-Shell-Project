@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:01:41 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 18:14:10 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/13 14:03:06 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_token	*new_token(char *value)
 {
 	t_token	*token;
 
+	if (!value)
+		return (NULL);
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
@@ -46,9 +48,7 @@ void	add_token(t_token **head, char *value)
 t_token	*tokenize(char *input)
 {
 	t_token	*tokens;
-	 char	**token_split;
-	// char	*joined;
-	//char	*final;
+	char	**token_split;
 	int		i;
 
 	tokens = NULL;
@@ -56,18 +56,10 @@ t_token	*tokenize(char *input)
 	token_split = our_split(input);
 	while (token_split[++i])
 	{
-		// if (token_split[i + 1] && token_split[i + 1][0] == '-')
-		// {
-		// 	joined = ft_strjoin(token_split[i], " ");
-		// 	final = ft_strjoin(joined, token_split[i + 1]);
-		// 	free(joined);
-		// 	add_token(&tokens, final);
-		// 	free(final);
-		// 	i++;
-		// }
-		// else
 			add_token(&tokens, token_split[i]);
 	}
+	// tokens->count_pip = num_pip(tokens);
+	// printf("number of pip:%d\n",tokens->count_pip);
 	free_tokens_split(token_split);
 	return (tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/06 15:52:05 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:44:19 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_token
 {
 	char *value;
 	t_enum type;
+	int count_pip;
     struct s_token *next;
 }t_token;
 
@@ -81,6 +82,22 @@ typedef struct s_quote_state {
     int inside_double;
     int inside_single;
 } t_quote_state;
+
+typedef struct s_files
+{
+	int count_infiles;
+	int count_outfiles;
+	char *last_file_in;
+	char *last_file_out;
+	int valid_in;
+	int valid_out;
+}t_files;
+
+typedef struct s_excute
+{
+	char *path;
+	
+}t_excute;
 
 t_token *new_token(char *value) ;
 void add_token(t_token **head,char *value);
@@ -131,4 +148,10 @@ void free_env_node(t_env *node);
 int unset_command(t_cmd *cmd, t_env **env);
 int cd_command(t_cmd *cmds, t_env *env);
 int ft_isnumeric(char *str);
+t_files *init_files(t_token *token);
+int check_validtion(char *file,int which);
+void	execute(char *cmd, char **envp);
+char	*get_path(char *cmd, char **envp);
+char	*my_env(const char *key, char **envp);
+int num_pip(t_token *token);
 #endif

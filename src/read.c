@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 18:27:34 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/13 13:52:46 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int main(int argc, char *argv[], char *envp[])
 	t_token	*tokens;
 	t_cmd	*cmd;
 	t_env   *env;
-
-	//cmd = NULL;
 	(void)argv;
 	(void)argc;
 	env = init_envp(envp);
@@ -38,13 +36,15 @@ int main(int argc, char *argv[], char *envp[])
 		if (right_command_check(readline_shell))
 			continue ;
 		tokens = tokenize(readline_shell);
-		define_word(tokens);
+		get_built_in_type(tokens);
+		//define_word(tokens);
 		cmd = separator(tokens);
 		if(!cmd)
-			return 1;
-		// print_tokens(tokens);
-		// print_commands(cmd);
+			continue;
 		execute_commands(cmd, env);
+		init_files(tokens);
+		print_tokens(tokens);
+		// print_commands(cmd);
 		free_tokens(tokens);
 		free_commands(cmd);
 		free(readline_shell);
