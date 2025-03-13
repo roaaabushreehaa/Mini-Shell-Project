@@ -6,11 +6,7 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/06 15:52:05 by rabu-shr         ###   ########.fr       */
-=======
-/*   Updated: 2025/03/13 14:04:35 by jalqam           ###   ########.fr       */
->>>>>>> jouds
+/*   Updated: 2025/03/13 16:31:49 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +131,5 @@ void free_env_node(t_env *node);
 int unset_command(t_cmd *cmd, t_env **env);
 int cd_command(t_cmd *cmds, t_env *env);
 int ft_isnumeric(char *str);
-<<<<<<< HEAD
-=======
-char    *handle_dollar_expander(t_token *token, t_env *env);
-
->>>>>>> jouds
+char *handle_dollar_expander(t_token *token, t_env *env);
 #endif

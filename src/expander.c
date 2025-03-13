@@ -6,11 +6,7 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:43:00 by rabu-shr          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/08 14:21:22 by rabu-shr         ###   ########.fr       */
-=======
-/*   Updated: 2025/03/13 13:59:31 by jalqam           ###   ########.fr       */
->>>>>>> jouds
+/*   Updated: 2025/03/13 16:32:48 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,20 +207,6 @@ char *handle_onequote_expander(t_token *token)
     return (result);
 }
 
-<<<<<<< HEAD
-// char *handle_dollar_expander(t_token *token, t_env *env)
-// {
-//     char *result = ft_strdup("");
-//     char *str = token->value;
-//     int i = 0;
-//     int len;
-//             ft_strlcpy(env_value, str + start, len + 1);
-//             result = ft_strjoin(result,);
-//         }
-//     }
-//     return result;
-// }
-=======
 static char *get_env_value(t_env *env, char *key)
 {
     t_env *current;
@@ -294,4 +276,3 @@ char *handle_dollar_expander(t_token *token, t_env *env)
     }
     return (result);
 }
->>>>>>> jouds
