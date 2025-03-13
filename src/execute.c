@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:18:13 by rabu-shr          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/06 16:04:46 by rabu-shr         ###   ########.fr       */
+=======
+/*   Updated: 2025/03/13 14:03:10 by jalqam           ###   ########.fr       */
+>>>>>>> jouds
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +41,17 @@ int execute_commands(t_cmd *cmd, t_env *env)
         }
         else if (!ft_strcmp(cmds->args[0], "echo"))
         {
-            echo_command(cmds);
+        
+    char *expanded;
+    int i = 0;
+    while (cmds->args[i])
+    {
+        expanded = handle_dollar_expander(&(t_token){.value = cmds->args[i]}, env);
+        free(cmds->args[i]);
+        cmds->args[i] = expanded;
+        i++;
+    }
+        echo_command(cmds);
             status = 1;
         }
         else if (!ft_strcmp(cmds->args[0], "exit"))
@@ -64,7 +78,8 @@ void env_print(t_env *env)
         return;
     while (env)
     {
-        printf("%s=%s\n", env->key, env->value);
+        if (env->value)
+            printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
 }

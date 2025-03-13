@@ -40,5 +40,9 @@ fclean: clean
 
 re: fclean all
 
+<<<<<<< HEAD
 .PHONY: all clean fclean re make_libft
 
+=======
+.PHONY: all clean fclean re
+>>>>>>> jouds

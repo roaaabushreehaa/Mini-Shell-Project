@@ -6,7 +6,7 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:27:24 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/06 14:49:08 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/08 16:56:02 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 void free_env_node(t_env *node)
 {
-    free(node->key);
-    free(node->value);
+    if (!node)
+        return;
+    if (node->key)
+        free(node->key);
+    if (node->value)
+        free(node->value);
     free(node);
 }
 
@@ -24,41 +28,42 @@ t_env *create_env_node(char *var)
     t_env *node;
     char *equal_char;
 
-    equal_char = ft_strchr(var, '=');
-    if (!equal_char)
-        return (NULL);
     node = ft_calloc(1, sizeof(t_env));
     if (!node)
         return (NULL);
-    node->key = ft_calloc((equal_char - var) + 1, sizeof(char));
-    if (!node->key)
+    equal_char = ft_strchr(var, '=');
+    if (!equal_char)
     {
-        free(node);
-        return (NULL);
+        node->key = ft_strdup(var);
+        node->value = NULL;
     }
-    ft_strlcpy(node->key, var, equal_char - var + 1);
-    node->value = ft_strdup(equal_char + 1);
-    if (!node->value)
+    else
     {
-        free(node->key);
-        free(node);
+        node->key = ft_substr(var, 0, equal_char - var);
+        node->value = ft_strdup(equal_char + 1);
+    }
+    if (!node->key || (equal_char && !node->value))
+    {
+        free_env_node(node);
         return (NULL);
     }
     node->next = NULL;
     return (node);
 }
 
-// void	free_env_list(t_env *env)
-// {
-//     t_env	*temp;
+void free_env_list(t_env *env)
+{
+    t_env *temp;
+    t_env *next;
 
-//     while (env)
-//     {
-//         temp = env;
-//         env = env->next;
-//         free_env_node(temp);
-//     }
-// }
+    temp = env;
+    while (temp)
+    {
+        next = temp->next;
+        free_env_node(temp);
+        temp = next;
+    }
+}
 
 t_env	*init_envp(char **env_list)
 {
