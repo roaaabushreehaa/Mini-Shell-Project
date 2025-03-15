@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_handle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:46:13 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 18:15:07 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/08 17:27:09 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char	**our_split(char *word)
 	free(s.new_word);
 	return (s.word_splitted);
 }
-
 char	*extract_word(char *str, size_t *i)
 {
 	size_t	start;
@@ -75,20 +74,27 @@ char	*extract_word(char *str, size_t *i)
 	start = *i;
 	in_quotes = 0;
 	quote_char = 0;
-	if (str[*i] == '"' || str[*i] == '\'')
-		handle_quotes(str, i, &in_quotes, &quote_char);
+
 	while (str[*i] && (in_quotes || str[*i] != ' '))
 	{
-		if (in_quotes && str[*i] == quote_char)
+		if ((str[*i] == '"' || str[*i] == '\'') && !in_quotes)
+		{
+			quote_char = str[*i];
+			in_quotes = 1;
+			(*i)++;
+			continue;
+		}
+		else if (str[*i] == quote_char && in_quotes)
 		{
 			in_quotes = 0;
 			(*i)++;
-			break ;
+			continue;
 		}
 		(*i)++;
 	}
 	return (ft_substr(str, start, *i - start));
 }
+
 
 char	**split_with_quotes(char *str)
 {
@@ -105,12 +111,15 @@ char	**split_with_quotes(char *str)
 		skip_spaces(str, &i);
 		if (!str[i])
 			break ;
-		if (!(result[j++] = extract_word(str, &i)))
+		result[j] = extract_word(str, &i);
+		if (!result[j])
 		{
 			free_result(result, j);
 			return (NULL);
 		}
+		j++;
 	}
 	result[j] = NULL;
 	return (result);
 }
+

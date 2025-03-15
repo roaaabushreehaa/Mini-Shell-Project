@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:59:17 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/05 18:14:18 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/15 15:32:30 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ t_cmd	*init_cmd(void)
 		return (NULL);
 	}
 	cmd->command_num = 0;
+    cmd->cmd_count=0;
 	cmd->type = NULL;
 	cmd->next = NULL;
+    cmd->pid=0;
+    cmd->prev=-1;
 	return (cmd);
 }
 t_cmd	*command(t_token **token, int cmd_num)
@@ -50,6 +53,7 @@ t_cmd	*command(t_token **token, int cmd_num)
             {
                 expander_main(*token);
                 processed_value = ft_strdup((*token)->value);
+                
             }
             else
             {
@@ -77,14 +81,15 @@ t_cmd	*command(t_token **token, int cmd_num)
     return (new_cmd);
 }
 
-t_cmd	*separator(t_token *token)
+t_cmd *separator(t_token *token)
 {
-    t_cmd	*cmd_list;
-    t_cmd	*cmd_node;
-    t_cmd	*new_cmd;
-    int		cmd_num;
+    t_cmd *cmd_list;
+    t_cmd *cmd_node;
+    t_cmd *new_cmd;
+    int cmd_num;
+    int total_cmds;
 
-	if (check_quotes_num(token))
+    if (check_quotes_num(token))
     {
         ft_printf("Error: Unmatched quotes\n");
         return (NULL);
@@ -92,30 +97,57 @@ t_cmd	*separator(t_token *token)
     cmd_node = NULL;
     cmd_list = NULL;
     cmd_num = 1;
+    total_cmds = 0;
     while (token)
     {
-        new_cmd = command(&token, cmd_num++);
-        if (!new_cmd)
-            return (NULL);
-        if (!cmd_list)
-            cmd_list = new_cmd;
+        if (token->type != PIPE)
+        {
+            new_cmd = command(&token, cmd_num);
+            if (!new_cmd)
+                return (NULL);
+            if (!cmd_list)
+                cmd_list = new_cmd;
+            else
+                cmd_node->next = new_cmd;
+            cmd_node = new_cmd;
+            cmd_num++;
+            total_cmds++;
+        }
         else
-            cmd_node->next = new_cmd;
-        cmd_node = new_cmd;
+            token = token->next;
     }
+    
+    // Set total command count for each node
+    cmd_node = cmd_list;
+    while (cmd_node)
+    {
+        cmd_node->cmd_count = total_cmds;
+        cmd_node = cmd_node->next;
+    }
+    
     return (cmd_list);
 }
 
-void	print_commands(t_cmd *cmd)
+
+void print_commands(t_cmd *cmd)
 {
-	while (cmd)
-	{
-		printf("Command %d:\n", cmd->command_num);
-		for (int i = 0; cmd->args[i]; i++)
-			printf("arg[%d]:%s\n", i, cmd->args[i]);
-		printf("\n");
-		cmd = cmd->next;
-	}
+    t_cmd *temp = cmd;
+    
+    if (!temp)
+        return;
+        
+    while (temp)
+    {
+        printf("Command %d:\n", temp->command_num);
+        if (temp->args)
+        {
+            for (int i = 0; temp->args[i]; i++)
+                printf("arg[%d]:%s\n", i, temp->args[i]);
+        }
+        printf("count: %d\n", temp->cmd_count);
+        printf("\n");
+        temp = temp->next;
+    }
 }
 
 void	free_cmd(t_cmd *cmd)
