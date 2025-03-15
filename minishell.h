@@ -3,10 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/15 16:17:31 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +150,7 @@ void	free_env_list(t_env *env);
 t_env	*init_envp(char **env_list);
 void free_commands(t_cmd *cmd);
 int export_command(t_cmd *cmd, t_env **env);
-int	print_export_command(t_env *env);
+int print_export_command(t_env *env);
 int expander_main(t_token *token);
 char *handle_mixed_quotes(t_token *token);
 void	free_cmd(t_cmd *cmd);
@@ -177,4 +176,5 @@ void	ft_free(char **s_cmd);
 void	free_function(char **s_cmd, char **paths);
 int get_cmd_execution(t_cmd *cmd, t_env *env, t_files *files);
 int init_fork(t_cmd *cmd,t_files *files);
+char *handle_dollar_expander(t_token *token, t_env *env);
 #endif

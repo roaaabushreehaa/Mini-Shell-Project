@@ -6,11 +6,26 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/15 15:38:08 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char *getpwd(char *prompt)
+{
+	char *pwd;
+	
+	pwd = getcwd(NULL, 0);
+	if(!pwd)
+	{
+		ft_printf("Error: getcwd\n");
+		return (NULL);
+	}
+	prompt = ft_strjoin("🎀minishell:",pwd);
+	prompt = ft_strjoin(prompt, "$ ");
+	free(pwd);
+	return (prompt);
+}
 
 int main(int argc, char *argv[], char *envp[])
 {
@@ -18,6 +33,10 @@ int main(int argc, char *argv[], char *envp[])
 	t_token	*tokens;
 	t_cmd	*cmd;
 	t_env   *env;
+	char *prompt;
+
+	//cmd = NULL;
+	prompt = NULL;
 	(void)argv;
 	(void)argc;
 	env = init_envp(envp);
@@ -25,7 +44,8 @@ int main(int argc, char *argv[], char *envp[])
         	return (1); 
 	while (1)
 	{
-		readline_shell = readline("🎀 minishell> ");
+		prompt = getpwd(prompt);
+		readline_shell = readline(prompt);
 		if (!readline_shell)
 		{
 			ft_printf("exit\n");
@@ -42,6 +62,7 @@ int main(int argc, char *argv[], char *envp[])
 		if(!cmd)
 			continue;
 		execute_commands(cmd, env,tokens);
+			return (1);
 		// print_tokens(tokens);
 		// print_commands(cmd);
 		free_tokens(tokens);
