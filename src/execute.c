@@ -6,42 +6,98 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:43:07 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/15 15:55:24 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/15 16:58:18 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	execute(char *cmd, char **envp)
-// {
-// 	char	**s_cmd;
-// 	char	*path;
+int execute_commands(t_cmd *cmd, t_env *env)
+{
+    t_cmd *cmds;
+    int status = 0;
+    cmds = cmd;
+    while (cmds)
+    {
+        // if (!cmds->args[0])
+        // {
+        //     cmds = cmds->next;
+        //     continue;
+        // }
+        if (!ft_strcmp(cmds->args[0], "pwd"))
+        {
+            char *word = getcwd(NULL, 0);
+            if (word)
+            {
+                printf("%s\n", word);
+                free(word);
+            }
+            else
+                status = 1;
+        }
+        else if (!ft_strcmp(cmds->args[0], "echo"))
+        {
+        
+    char *expanded;
+    int i = 0;
+    while (cmds->args[i])
+    {
+        expanded = handle_dollar_expander(&(t_token){.value = cmds->args[i]}, env);
+        free(cmds->args[i]);
+        cmds->args[i] = expanded;
+        i++;
+    }
+        echo_command(cmds);
+            status = 1;
+        }
+        else if (!ft_strcmp(cmds->args[0], "exit"))
+            exit_command(cmd);
+        else if (!ft_strcmp(cmds->args[0], "env"))
+            env_print(env);
+        else if(!ft_strcmp(cmd->args[0],"export"))
+            export_command(cmds, &env);
+        else if(!ft_strcmp(cmd->args[0],"unset"))
+            unset_command(cmds, &env);
+        else if(!ft_strcmp(cmd->args[0],"cd"))
+            cd_command(cmds, env);
+        // else
+        //     status = execute_external_command(cmds, env);
+        cmds = cmds->next;
+    }
+    return (status);
+}
+//execute_external_command
 
-// 	s_cmd = ft_split(cmd, ' ');
-// 	if(!s_cmd || !s_cmd[0])
-// 	{
-// 		if (s_cmd)
-// 			free(s_cmd);
-// 		exit(1);
-// 	}
-// 	path = get_path(s_cmd[0], envp);
-// 	if (!path)
-// 		ft_exit(path, s_cmd, 0);
-// 	if (cmd == 0 || cmd[0] == ' ')
-// 		ft_exit(path, s_cmd, 2);
-// 	if (cmd[0] == '/')
-// 	{
-// 		if (!access(cmd, X_OK))
-// 			execve(cmd, s_cmd, envp);
-// 		ft_exit(path, s_cmd, 3);
-// 	}
-// 	if (execve(path, s_cmd, envp) == -1)
-// 		ft_exit(path, s_cmd, 1);
-// 	ft_exit(path, s_cmd, 3);
-// }
+void env_print(t_env *env)
+{
+    if (!env)
+        return;
+    while (env)
+    {
+        if (env->value)
+            printf("%s=%s\n", env->key, env->value);
+        env = env->next;
+    }
+}
 
-
-
+void exit_command(t_cmd *cmds)
+{
+    int exit_code;
+    exit_code = 0;
+    if (cmds->args[1])
+    {
+        exit_code = ft_atoi(cmds->args[1]);
+        // printf("%d",exit_code);
+        if (!ft_isnumeric(cmds->args[1]))
+        {
+            printf("exit\n");
+            fprintf(stderr, "minishell: exit: %s: numeric argument required\n", cmds->args[1]);
+            exit(255);
+        }
+    }
+    printf("exit\n");
+    exit(exit_code);
+}
 
 int num_pip(t_token *token)
 {

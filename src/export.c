@@ -6,7 +6,7 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:13:05 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/06 14:22:56 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/08 16:58:53 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,16 @@ static int is_valid_export(char *arg)
     int i;
 
     i = 0;
+    if (!ft_isalpha(arg[i]) && arg[i] != '_')
+        return (0);
+    i++;
     while (arg[i] && arg[i] != '=')
-        i++;
-    if (i > 0 && arg[i] == '=')
     {
-        if (i > 0 && (arg[i - 1] == ' ' || arg[i + 1] == ' '))
+        if (!ft_isalnum(arg[i]) && arg[i] != '_')
             return (0);
-        if (ft_isdigit(arg[0]))
-            return (0);
-        return (1);
+        i++;
     }
-    return (0);
+    return (1);
 }
 int	export_command(t_cmd *cmd, t_env **env)
 {
@@ -90,16 +89,52 @@ static void swap_nodes(t_env *a, t_env *b)
     b->value = temp_value;
 }
 
-int	print_export_command(t_env *env)
+static t_env *copy_env_list(t_env *env)
 {
-    t_env	*j;
-    int		swapped;
+    t_env *copy;
+    t_env *new;
+    t_env *last;
 
+    copy = NULL;
+    last = NULL;
+    while (env)
+    {
+        new = malloc(sizeof(t_env));
+        if (!new)
+            return (NULL);
+        new->key = ft_strdup(env->key);
+        new->value = env->value ? ft_strdup(env->value) : NULL;
+        new->next = NULL;
+        if (!new->key || (env->value && !new->value))
+        {
+            free_env_node(new);
+            free_env_list(copy);
+            return (NULL);
+        }
+        if (!copy)
+            copy = new;
+        else
+            last->next = new;
+        last = new;
+        env = env->next;
+    }
+    return (copy);
+}
+
+int print_export_command(t_env *env)
+{
+    t_env *sorted;
+    t_env *j;
+    int swapped;
+
+    sorted = copy_env_list(env);
+    if (!sorted)
+        return (1);
     swapped = 1;
     while (swapped)
     {
         swapped = 0;
-        j = env;
+        j = sorted;
         while (j->next)
         {
             if (ft_strcmp(j->key, j->next->key) > 0)
@@ -110,11 +145,16 @@ int	print_export_command(t_env *env)
             j = j->next;
         }
     }
-    while (env)
+    j = sorted;
+    while (j)
     {
-        ft_printf("declare -x %s=\"%s\"\n", env->key, env->value);
-        env = env->next;
+        if (j->value)
+            ft_printf("declare -x %s=\"%s\"\n", j->key, j->value);
+        else
+            ft_printf("declare -x %s\n", j->key);
+        j = j->next;
     }
+    free_env_list(sorted);
     return (0);
 }
 
