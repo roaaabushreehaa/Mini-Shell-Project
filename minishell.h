@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/15 16:17:31 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/15 16:26:05 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,5 @@ void	error_handel(void);
 void	ft_free(char **s_cmd);
 void	free_function(char **s_cmd, char **paths);
 int get_cmd_execution(t_cmd *cmd, t_env *env, t_files *files);
-int init_fork(t_cmd *cmd,t_files *files);
+//int init_fork(t_cmd *cmd,t_files *files);
 #endif
