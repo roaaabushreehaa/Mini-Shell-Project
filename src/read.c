@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/13 13:52:46 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:38:08 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ int main(int argc, char *argv[], char *envp[])
 		cmd = separator(tokens);
 		if(!cmd)
 			continue;
-		execute_commands(cmd, env);
-		init_files(tokens);
-		print_tokens(tokens);
+		execute_commands(cmd, env,tokens);
+		// print_tokens(tokens);
 		// print_commands(cmd);
 		free_tokens(tokens);
 		free_commands(cmd);

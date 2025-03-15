@@ -6,57 +6,73 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:18:13 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/12 16:05:51 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:55:07 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int execute_commands(t_cmd *cmd, t_env *env)
+int is_builtin(char *cmd)
+{
+    return (!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "echo") ||
+            !ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "env") ||
+            !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset") ||
+            !ft_strcmp(cmd, "cd"));
+}
+
+int execute_commands(t_cmd *cmd, t_env *env,t_token *tokens)
 {
     t_cmd *cmds;
     int status = 0;
+    char **env_array;
+    env_array = NULL;  
+    t_files *files;
     cmds = cmd;
+    files =init_files(tokens);
     while (cmds)
     {
-        // if (!cmds->args[0])
-        // {
-        //     cmds = cmds->next;
-        //     continue;
-        // }
-        if (!ft_strcmp(cmds->args[0], "pwd"))
+        if (!cmds->args[0])
         {
-            char *word = getcwd(NULL, 0);
-            if (word)
+            cmds = cmds->next;
+            continue;
+        }
+
+        if (is_builtin(cmds->args[0]))
+        {
+            // Handle builtin commands
+            if (!ft_strcmp(cmds->args[0], "pwd"))
             {
-                printf("%s\n", word);
-                free(word);
+                char *word = getcwd(NULL, 0);
+                if (word)
+                {
+                    printf("%s\n", word);
+                    free(word);
+                }
+                else
+                    status = 1;
             }
-            else
+            else if (!ft_strcmp(cmds->args[0], "echo"))
+            {
+                echo_command(cmds);
                 status = 1;
+            }
+            else if (!ft_strcmp(cmds->args[0], "exit"))
+                exit_command(cmd);
+            else if (!ft_strcmp(cmds->args[0], "env"))
+                env_print(env);
+            else if(!ft_strcmp(cmd->args[0],"export"))
+                export_command(cmds, &env);
+            else if(!ft_strcmp(cmd->args[0],"unset"))
+                unset_command(cmds, &env);
+            else if(!ft_strcmp(cmd->args[0],"cd"))
+                cd_command(cmds, env);
+            // else 
+            //     get_cmd_execution(cmd,env,files);
         }
-        else if (!ft_strcmp(cmds->args[0], "echo"))
-        {
-            echo_command(cmds);
-            status = 1;
-        }
-        else if (!ft_strcmp(cmds->args[0], "exit"))
-            exit_command(cmd);
-        else if (!ft_strcmp(cmds->args[0], "env"))
-            env_print(env);
-        else if(!ft_strcmp(cmd->args[0],"export"))
-            export_command(cmds, &env);
-        else if(!ft_strcmp(cmd->args[0],"unset"))
-            unset_command(cmds, &env);
-        else if(!ft_strcmp(cmd->args[0],"cd"))
-            cd_command(cmds, env);
-        // else
-        //     status = execute_external_command(cmds, env);
         cmds = cmds->next;
     }
     return (status);
 }
-//execute_external_command
 
 void env_print(t_env *env)
 {

@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:43:07 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/13 13:59:56 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:55:24 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,8 @@
 // 	ft_exit(path, s_cmd, 3);
 // }
 
-// int fork_init(char **envp,t_files *files,char *cmd,t_token *token)
-// {
-// 	int count;
-// 	count = token->count_pip;
-// 	int fd[count][2];
-// 	 pid_t *pids = malloc(sizeof(pid_t) * (count + 1));
-// 	 int i=0; 
-	 
-// 	while (i<count)
-// 	{
-// 		if (pipe(fd[i]) == -1)
-//         {
-//             perror("Pipe failed");
-//             return (-1);
-//         }
-// 	}
-	
-	
-// }
+
+
 
 int num_pip(t_token *token)
 {

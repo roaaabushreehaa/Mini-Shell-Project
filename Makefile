@@ -6,7 +6,7 @@ SRC_DIR = src
 
 OBJ_DIR = obj
 
-SRC = read.c token.c handle.c split_handle.c utils.c split_quotes.c cmd.c execute_builtin.c echo.c unset.c expander.c export.c cd.c env.c free.c parsing.c files_open.c execute.c
+SRC = read.c token.c handle.c split_handle.c utils.c split_quotes.c cmd.c execute_builtin.c echo.c unset.c expander.c export.c cd.c env.c free.c parsing.c files_open.c execute.c pipex.c
 OBSRC = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 LIBFT_DIR = libft

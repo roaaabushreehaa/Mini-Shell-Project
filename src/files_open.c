@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 12:47:08 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/13 14:09:03 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:54:42 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void execute_out_files(t_token *temp , t_files *files)
         files->valid_out = 0;
         return;
     }
-    close(fd);  // Close the file descriptor after validation
+    close(fd); 
     files->count_outfiles++;
         
     if (files->last_file_out)
@@ -65,28 +65,32 @@ t_files *init_files(t_token *token)
     t_token *temp;
 
     if (!token)
-    	return (NULL);
+        return (NULL);
     files = malloc(sizeof(t_files));
     if (!files)
         return (NULL);
     files->count_infiles = 0;
     files->count_outfiles = 0;
-    files->last_file_in = NULL;  
-    files->last_file_out = NULL;  
+    files->last_file_in = NULL;
+    files->last_file_out = NULL;
     files->valid_in = 1;
     files->valid_out = 1;
     temp = token;
     
     while (temp)
     {
-        if (temp->type == INFILE && temp->value)
-			execute_in_files(temp,files);
-        else if (temp->type == OUTFILE && temp->value)
-			execute_out_files(temp,files);
+        if ((temp->type == REDIRECT_IN || temp->type == INFILE) && temp->next)
+        {
+            temp = temp->next;
+            execute_in_files(temp, files);
+        }
+        else if ((temp->type == REDIRECT_OUT || temp->type == OUTFILE) && temp->next)
+        {
+            temp = temp->next;
+            execute_out_files(temp, files);
+        }
         temp = temp->next;
-		
     }
-    print_file_counts(files);
     return (files);
 }
 
