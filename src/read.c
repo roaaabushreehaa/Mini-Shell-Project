@@ -3,10 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:31:38 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/08 16:04:45 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +56,15 @@ int main(int argc, char *argv[], char *envp[])
 		if (right_command_check(readline_shell))
 			continue ;
 		tokens = tokenize(readline_shell);
-		define_word(tokens);
+		get_built_in_type(tokens);
+		//define_word(tokens);
 		cmd = separator(tokens);
 		if(!cmd)
+			continue;
+		execute_commands(cmd, env,tokens);
 			return (1);
 		// print_tokens(tokens);
 		// print_commands(cmd);
-		execute_commands(cmd, env);
 		free_tokens(tokens);
 		free_commands(cmd);
 		free(readline_shell);

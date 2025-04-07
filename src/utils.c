@@ -6,7 +6,7 @@
 /*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:11:31 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/06 12:09:03 by rabu-shr         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:41:48 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,37 @@ int ft_isnumeric(char *str)
 		i++;
 	}
 	return (1);
+}
+
+void	ft_exit(char *path, char **s_cmd, int which)
+{
+	if (which == 0)
+		perror("Command not found");
+	if (which == 1)
+		perror("Execution failed");
+	if (which == 2)
+		error_handel();
+	free(path);
+	ft_free(s_cmd);
+	exit(1);
+}
+
+void	error_handel(void)
+{
+	perror("Error");
+	exit(1);
+}
+
+
+void	ft_free(char **s_cmd)
+{
+	int	i;
+
+	i = 0;
+	while (s_cmd[i])
+	{
+		free(s_cmd[i]);
+		i++;
+	}
+	free(s_cmd);
 }

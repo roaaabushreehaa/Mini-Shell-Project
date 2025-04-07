@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabu-shr <rabu-shr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:00:20 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/05 18:14:56 by jalqam           ###   ########.fr       */
+/*   Updated: 2025/03/08 14:35:25 by rabu-shr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	right_command_check(char *command)
 		}
 		else if ((!flag_echo && command[i] == 'e' && command[i + 1] == 'c'
 					&& command[i + 2] == 'h' && command[i + 3] == 'o')
-				&& command[i + 4] != ' ')
+				&& command[i + 4] != ' ' && command[i + 5])
 		{
 			text_error(1);
 			return (1);

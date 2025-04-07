@@ -6,7 +6,6 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:36:10 by jalqam            #+#    #+#             */
-/*   Updated: 2025/03/13 16:31:49 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +17,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <sys/wait.h>  // Add this line
 #include <readline/readline.h>
 #include <readline/history.h>
 #include"libft/libft.h"
@@ -44,6 +44,7 @@ typedef struct s_token
 {
 	char *value;
 	t_enum type;
+	int count_pip;
     struct s_token *next;
 }t_token;
 
@@ -51,7 +52,10 @@ typedef struct s_cmd
 {
 	char **args;
 	char *value;
+	pid_t	pid;
+	int prev;
 	int command_num;
+	int cmd_count;
 	char *type;
 	t_token *tokens;
 	struct s_cmd *next;
@@ -82,6 +86,35 @@ typedef struct s_quote_state {
     int inside_single;
 } t_quote_state;
 
+typedef struct s_files
+{
+	int count_infiles;
+	int count_outfiles;
+	char *last_file_in;
+	char *last_file_out;
+	int valid_in;
+	int valid_out;
+}t_files;
+
+typedef struct s_excute
+{
+	char *path;
+	
+}t_excute;
+
+typedef struct s_command
+{
+    char *cmd;
+    struct s_command *next;
+} t_command;
+
+typedef struct s_pip
+{
+	pid_t	*pid;
+	int old_fd;
+	char *cmd;
+	char *path;
+}t_pip;
 t_token *new_token(char *value) ;
 void add_token(t_token **head,char *value);
 t_token *tokenize(char *input);
@@ -108,7 +141,7 @@ void print_commands(t_cmd *cmd);
 void get_built_in_type(t_token *token);
 void define_word (t_token *token);
 void define_word (t_token *token);
-int execute_commands(t_cmd *cmd, t_env *env);
+int execute_commands(t_cmd *cmd, t_env *env,t_token *tokens);
 void echo_command(t_cmd *cmds);
 void exit_command(t_cmd *cmds);
 void env_print(t_env *env);
@@ -131,5 +164,17 @@ void free_env_node(t_env *node);
 int unset_command(t_cmd *cmd, t_env **env);
 int cd_command(t_cmd *cmds, t_env *env);
 int ft_isnumeric(char *str);
+t_files *init_files(t_token *token);
+int check_validtion(char *file,int which);
+void	execute(char *cmd, char **envp);
+char	*get_path(char *cmd, char **envp);
+char	*my_env(const char *key, char **envp);
+int num_pip(t_token *token);
+void	ft_exit(char *path, char **s_cmd, int which);
+void	error_handel(void);
+void	ft_free(char **s_cmd);
+void	free_function(char **s_cmd, char **paths);
+int get_cmd_execution(t_cmd *cmd, t_env *env, t_files *files);
+int init_fork(t_cmd *cmd,t_files *files);
 char *handle_dollar_expander(t_token *token, t_env *env);
 #endif

@@ -6,7 +6,6 @@
 /*   By: jalqam <jalqam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:43:00 by rabu-shr          #+#    #+#             */
-/*   Updated: 2025/03/13 16:32:48 by jalqam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +35,6 @@ int expander_main(t_token *token)
                 expanded = handle_onequote_expander(temp);
             else if (ft_strchr(temp->value, '"'))
                 expanded = handle_twoquotes(temp);
-            // else if(ft_strchr(temp->value, '$'))
-            //     expanded = handle_dollar_expander(temp);
             if (expanded)
             {
                 free(temp->value);
@@ -49,76 +46,19 @@ int expander_main(t_token *token)
     return (0);
 }
 
-// char *handle_mixed_quotes(t_token *token)
-// {
-//     if (!token || !token->value)
-//         return (NULL);
-        
-//     char *result;
-//     char *value;
-//     int i;
-//     int inside_double;
-//     int inside_single;
-//     char *old_result;
-//     char new_char[2];
-//     i = 0;
-//     inside_double = 0;
-//     result = ft_strdup("");
-//     value = token->value;
-//     inside_single = 0;
-//     while (value[i])
-//     {
-//         if (value[i] == '"' && !inside_single)
-//         {
-//             inside_double = !inside_double;
-//             if (inside_single)
-//             {
-//                 old_result = result;
-//                 result = ft_strjoin(result, "\"");
-//                 free(old_result);
-//             }
-//         }
-//         else if (value[i] == '\'' && !inside_double)
-//         {
-//             inside_single = !inside_single;
-//             if (inside_double)
-//             {
-//                 char *old_result = result;
-//                 result = ft_strjoin(result, "'");
-//                 free(old_result);
-//             }
-//         }
-//         else
-//         {
-//             old_result = result;
-//             new_char[0] = value[i];
-//             new_char[1] = '\0';
-//             result = ft_strjoin(result, new_char);
-//             free(old_result);
-//         }
-//         i++;
-//     }
-    
-//     return (result);
-// }
-
 char *handle_mixed_quotes(t_token *token)
 {
     if (!token || !token->value)
         return (NULL);
-        
-    char *result;
-    char *value;
-    int i;
-    int inside_double;
-    int inside_single;
     
-    i = 0;
-    inside_double = 0;
-    inside_single = 0;
-    result = ft_strdup("");
-    value = token->value;
-    
+    char *result = ft_strdup(""); 
+    char *value = token->value;
+    char *old_result;
+    char new_char[2];
+    int i = 0;
+    int inside_double = 0;
+    int inside_single = 0;
+
     while (value[i])
     {
         if (value[i] == '"' && !inside_single)
@@ -133,15 +73,17 @@ char *handle_mixed_quotes(t_token *token)
             i++;
             continue;
         }
-        
-        char *old_result = result;
-        char new_char[2] = {value[i], '\0'};
+        old_result = result;
+        new_char[0] = value[i];
+        new_char[1] = '\0';
         result = ft_strjoin(result, new_char);
         free(old_result);
+        
         i++;
     }
     return result;
 }
+
 
 char *handle_twoquotes(t_token *token)
 {
@@ -201,7 +143,7 @@ char *handle_onequote_expander(t_token *token)
         new_char[1] = '\0';
         result = ft_strjoin(result, new_char);
         free(old_result);
-        
+
         i++;
     }
     return (result);
