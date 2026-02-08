@@ -71,11 +71,12 @@ void	free_function(char **s_cmd, char **paths)
 	ft_free(paths);
 }
 
-int get_cmd_execution(t_cmd *cmd,char **env,t_files *files)
+int get_cmd_execution(t_cmd *cmd, t_env *env, t_files *files)
 {
 	int		fd[2];
 	t_cmd *temp;
 	int i;
+	(void)env;
 	i=0;
 	temp=cmd;
 	while (i < cmd->cmd_count - 1)
@@ -91,21 +92,22 @@ int get_cmd_execution(t_cmd *cmd,char **env,t_files *files)
 		}
 		
 	}
-	
-	
+	return (0);
 }
 
 
 int init_fork(t_cmd *cmd,t_files *files)
 {
+	(void)files;
+	cmd->pid=fork();
 
-cmd->pid=fork();
-
-if (cmd->pid == 0 && cmd->pid != -1)
-{
-	child_process(cmd,files);
-}
-
+	if (cmd->pid == 0 && cmd->pid != -1)
+	{
+		// TODO: Implement child_process function
+		// child_process(cmd,files);
+		exit(0);
+	}
+	return (0);
 }
 
 // void execute_child_process(t_cmd *cmd, int *prev_pipe, int *curr_pipe, char **env, t_files *files)
