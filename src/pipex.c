@@ -103,6 +103,7 @@ int init_fork(t_cmd *cmd,t_files *files)
 
 	if (cmd->pid == 0 && cmd->pid != -1)
 	{
+		// TODO: Implement child_process function
 		// child_process(cmd,files);
 		exit(0);
 	}
