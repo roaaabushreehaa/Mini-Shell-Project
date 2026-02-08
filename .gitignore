@@ -1,0 +1,13 @@
+# Object files
+*.o
+*.a
+
+# Build directories
+obj/
+
+# Binary
+minishell
+
+# Temporary files
+in
+out

@@ -24,11 +24,8 @@ int execute_commands(t_cmd *cmd, t_env *env,t_token *tokens)
 {
     t_cmd *cmds;
     int status = 0;
-    char **env_array;
-    env_array = NULL;  
-    t_files *files;
     cmds = cmd;
-    files =init_files(tokens);
+    (void)tokens;
     while (cmds)
     {
         if (!cmds->args[0])
@@ -80,7 +77,8 @@ void env_print(t_env *env)
         return;
     while (env)
     {
-        printf("%s=%s\n", env->key, env->value);
+        if (env->value)
+            printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
 }
