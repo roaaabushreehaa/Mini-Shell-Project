@@ -1,0 +1,5 @@
+obj/
+*.o
+*.a
+minishell
+_codeql_detected_source_root
